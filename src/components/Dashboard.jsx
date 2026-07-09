@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react';
-
 const CARD_CONFIG = [
   { key: 'total',      label: 'Total Requests',    icon: '📋', color: 'var(--card-total)' },
   { key: 'open',       label: 'Open',              icon: '🔵', color: 'var(--card-open)' },
@@ -18,35 +16,7 @@ function countRequests(requests) {
   };
 }
 
-export default function Dashboard() {
-  const [counts, setCounts] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    let active = true;
-
-    fetch('/api/requests')
-      .then((res) => {
-        if (!res.ok) throw new Error('Failed to load requests');
-        return res.json();
-      })
-      .then((data) => {
-        if (active) {
-          setCounts(countRequests(data));
-          setLoading(false);
-        }
-      })
-      .catch((err) => {
-        if (active) {
-          setError(err.message);
-          setLoading(false);
-        }
-      });
-
-    return () => { active = false; };
-  }, []);
-
+export default function Dashboard({ requests, loading, error }) {
   if (loading) {
     return (
       <section className="dashboard" aria-label="Dashboard summary">
@@ -73,6 +43,8 @@ export default function Dashboard() {
       </section>
     );
   }
+
+  const counts = countRequests(requests);
 
   return (
     <section className="dashboard" aria-label="Dashboard summary">
