@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Dashboard from './components/Dashboard.jsx';
 import RequestList from './components/RequestList.jsx';
 import RequestDetail from './components/RequestDetail.jsx';
+import RequestCreateForm from './components/RequestCreateForm.jsx';
 
 export default function App() {
   const [requests, setRequests] = useState([]);
@@ -9,9 +10,11 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedRequestId, setSelectedRequestId] = useState(null);
+  const [showCreateForm, setShowCreateForm] = useState(false);
 
-  useEffect(() => {
+  const loadData = useCallback(() => {
     let active = true;
+    setLoading(true);
 
     Promise.all([
       fetch('/api/requests').then((r) => {
@@ -28,6 +31,7 @@ export default function App() {
           setRequests(reqData);
           setUsers(userData);
           setLoading(false);
+          setError(null);
         }
       })
       .catch((err) => {
@@ -39,6 +43,11 @@ export default function App() {
 
     return () => { active = false; };
   }, []);
+
+  useEffect(() => {
+    const cleanup = loadData();
+    return cleanup;
+  }, [loadData]);
 
   function handleSelectRequest(id) {
     setSelectedRequestId(id);
@@ -54,6 +63,11 @@ export default function App() {
         <div>
           <p className="eyebrow">Support Request Tracker</p>
           <h1>Dashboard</h1>
+        </div>
+        <div className="header-actions">
+          <button className="btn btn-primary" onClick={() => setShowCreateForm(true)}>
+            + Create Request
+          </button>
         </div>
       </header>
 
@@ -71,6 +85,16 @@ export default function App() {
         <RequestDetail
           requestId={selectedRequestId}
           onClose={handleCloseDetail}
+        />
+      )}
+
+      {showCreateForm && (
+        <RequestCreateForm
+          onClose={() => setShowCreateForm(false)}
+          onSuccess={() => {
+            setShowCreateForm(false);
+            loadData();
+          }}
         />
       )}
     </main>
