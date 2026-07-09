@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import Dashboard from './components/Dashboard.jsx';
 import RequestList from './components/RequestList.jsx';
+import RequestDetail from './components/RequestDetail.jsx';
 
 export default function App() {
   const [requests, setRequests] = useState([]);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedRequestId, setSelectedRequestId] = useState(null);
 
   useEffect(() => {
     let active = true;
@@ -39,8 +41,11 @@ export default function App() {
   }, []);
 
   function handleSelectRequest(id) {
-    // Will be implemented in Step 6 (detail panel)
-    console.log('Selected request:', id);
+    setSelectedRequestId(id);
+  }
+
+  function handleCloseDetail() {
+    setSelectedRequestId(null);
   }
 
   return (
@@ -61,6 +66,14 @@ export default function App() {
         error={error}
         onSelectRequest={handleSelectRequest}
       />
+
+      {selectedRequestId && (
+        <RequestDetail
+          requestId={selectedRequestId}
+          onClose={handleCloseDetail}
+        />
+      )}
     </main>
   );
 }
+
