@@ -155,7 +155,7 @@ export default function RequestDetail({ requestId, users, role, onClose, onUpdat
               )}
             </div>
             
-            {detail && !isEditing && role === 'AGENT' && (
+            {detail && !isEditing && role === 'EDITOR' && (
               <button className="btn btn-secondary" onClick={() => setIsEditing(true)}>
                 Edit Request
               </button>
