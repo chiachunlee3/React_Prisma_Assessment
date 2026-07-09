@@ -474,7 +474,8 @@ h1 {
   top: 0;
   right: 0;
   bottom: 0;
-  width: min(600px, 100vw);
+  width: 100%;
+  max-width: 600px;
   background: var(--bg-page);
   box-shadow: -10px 0 30px rgba(0, 0, 0, 0.3);
   z-index: 101;
@@ -818,8 +819,8 @@ h1 {
    ================================================================ */
 @media (max-width: 600px) {
   .app-shell {
-    width: calc(100% - 24px);
-    padding: 20px 0 48px;
+    width: 100%;
+    padding: 20px 16px 48px;
   }
 
   .app-header {
@@ -878,5 +879,25 @@ h1 {
 
   .cell-date {
     margin-top: 6px;
+  }
+  
+  .detail-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .header-actions {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .header-actions button {
+    width: 100%;
   }
 }
