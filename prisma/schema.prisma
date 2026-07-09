@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model SupportRequest {
+  id            Int      @id @default(autoincrement())
+  requestNumber String   @unique
+  requesterName String
+  email         String
+  category      String
+  priority      String   @default("Medium")
+  status        String   @default("Open")
+  assignedTo    String?
+  message       String
+  internalNote  String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  events RequestEvent[]
+}
+
+model RequestEvent {
+  id        Int      @id @default(autoincrement())
+  requestId Int
+  action    String
+  note      String?
+  createdAt DateTime @default(now())
+
+  request SupportRequest @relation(fields: [requestId], references: [id])
+}
+
+model UserOption {
+  id        Int    @id @default(autoincrement())
+  name      String @unique
+  roleLabel String
+}
