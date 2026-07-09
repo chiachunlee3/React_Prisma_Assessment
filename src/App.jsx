@@ -84,7 +84,9 @@ export default function App() {
       {selectedRequestId && (
         <RequestDetail
           requestId={selectedRequestId}
+          users={users}
           onClose={handleCloseDetail}
+          onUpdate={loadData}
         />
       )}
 
