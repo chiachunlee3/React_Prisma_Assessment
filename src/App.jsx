@@ -11,6 +11,10 @@ export default function App() {
   const [error, setError] = useState(null);
   const [selectedRequestId, setSelectedRequestId] = useState(null);
   const [showCreateForm, setShowCreateForm] = useState(false);
+  const [role, setRole] = useState('AGENT'); // 'AGENT' or 'REQUESTER'
+  
+  const MOCK_REQUESTER_EMAIL = 'alice.tan@example.com';
+  const MOCK_REQUESTER_NAME = 'Alice Tan';
 
   const loadData = useCallback(() => {
     let active = true;
@@ -65,16 +69,23 @@ export default function App() {
           <h1>Dashboard</h1>
         </div>
         <div className="header-actions">
+          <div className="role-selector" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Role:</span>
+            <select className="filter-select" value={role} onChange={(e) => setRole(e.target.value)} style={{ padding: '8px 12px', minWidth: '140px' }}>
+              <option value="AGENT">Support Agent</option>
+              <option value="REQUESTER">Requester (Alice)</option>
+            </select>
+          </div>
           <button className="btn btn-primary" onClick={() => setShowCreateForm(true)}>
             + Create Request
           </button>
         </div>
       </header>
 
-      <Dashboard requests={requests} loading={loading} error={error} />
+      <Dashboard requests={role === 'AGENT' ? requests : requests.filter(r => r.email === MOCK_REQUESTER_EMAIL)} loading={loading} error={error} />
 
       <RequestList
-        requests={requests}
+        requests={role === 'AGENT' ? requests : requests.filter(r => r.email === MOCK_REQUESTER_EMAIL)}
         users={users}
         loading={loading}
         error={error}
@@ -85,6 +96,7 @@ export default function App() {
         <RequestDetail
           requestId={selectedRequestId}
           users={users}
+          role={role}
           onClose={handleCloseDetail}
           onUpdate={loadData}
         />
@@ -92,6 +104,9 @@ export default function App() {
 
       {showCreateForm && (
         <RequestCreateForm
+          role={role}
+          mockName={MOCK_REQUESTER_NAME}
+          mockEmail={MOCK_REQUESTER_EMAIL}
           onClose={() => setShowCreateForm(false)}
           onSuccess={() => {
             setShowCreateForm(false);

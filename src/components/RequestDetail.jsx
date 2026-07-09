@@ -24,7 +24,7 @@ function statusClass(status) {
   return `badge badge--${map[status] || 'default'}`;
 }
 
-export default function RequestDetail({ requestId, users, onClose, onUpdate }) {
+export default function RequestDetail({ requestId, users, role, onClose, onUpdate }) {
   const [detail, setDetail] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -155,7 +155,7 @@ export default function RequestDetail({ requestId, users, onClose, onUpdate }) {
               )}
             </div>
             
-            {detail && !isEditing && (
+            {detail && !isEditing && role === 'AGENT' && (
               <button className="btn btn-secondary" onClick={() => setIsEditing(true)}>
                 Edit Request
               </button>

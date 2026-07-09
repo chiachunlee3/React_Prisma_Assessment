@@ -3,10 +3,12 @@ import { useState, useEffect } from 'react';
 const CATEGORY_OPTIONS = ['Account', 'Billing', 'Bug', 'Feature Request', 'General Inquiry', 'Technical'];
 const PRIORITY_OPTIONS = ['Low', 'Medium', 'High'];
 
-export default function RequestCreateForm({ onClose, onSuccess }) {
+export default function RequestCreateForm({ role, mockName, mockEmail, onClose, onSuccess }) {
+  const isRequester = role === 'REQUESTER';
+
   const [formData, setFormData] = useState({
-    requesterName: '',
-    email: '',
+    requesterName: isRequester ? mockName : '',
+    email: isRequester ? mockEmail : '',
     category: '',
     priority: 'Medium',
     status: 'Open',
@@ -116,6 +118,8 @@ export default function RequestCreateForm({ onClose, onSuccess }) {
                   className="form-input"
                   value={formData.requesterName}
                   onChange={handleChange}
+                  readOnly={isRequester}
+                  style={isRequester ? { opacity: 0.7, cursor: 'not-allowed' } : {}}
                   required
                 />
               </div>
@@ -129,6 +133,8 @@ export default function RequestCreateForm({ onClose, onSuccess }) {
                   className="form-input"
                   value={formData.email}
                   onChange={handleChange}
+                  readOnly={isRequester}
+                  style={isRequester ? { opacity: 0.7, cursor: 'not-allowed' } : {}}
                   required
                 />
               </div>
