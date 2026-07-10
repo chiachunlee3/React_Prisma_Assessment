@@ -143,7 +143,7 @@ export default function RequestDetail({ requestId, users, role, onClose, onUpdat
             <button className="detail-panel__close" onClick={onClose} aria-label="Close panel">✕</button>
           )}
 
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', paddingRight: 48 }}>
             <div>
               {loading && <div className="detail-panel__title-skeleton"><div className="skeleton-line" style={{ width: '50%', height: 20 }} /></div>}
               {error && <h2 className="detail-panel__title">Error</h2>}
