@@ -847,6 +847,10 @@ h1 {
     flex-direction: column;
   }
 
+  .filter-search {
+    flex: 0 0 auto;
+  }
+
   .filter-select {
     width: 100%;
   }
@@ -871,6 +875,11 @@ h1 {
   .request-table td {
     padding: 2px 0;
     border-bottom: none;
+  }
+
+  .request-table td:nth-child(6),
+  .request-table td:nth-child(7) {
+    display: none;
   }
 
   .request-table td:first-child {
@@ -899,5 +908,17 @@ h1 {
 
   .header-actions button {
     width: 100%;
+  }
+
+  .detail-panel__header {
+    padding: 20px 16px 16px;
+  }
+
+  .detail-panel__body {
+    padding: 20px 16px;
+  }
+
+  .detail-panel__title {
+    font-size: 1.35rem;
   }
 }
